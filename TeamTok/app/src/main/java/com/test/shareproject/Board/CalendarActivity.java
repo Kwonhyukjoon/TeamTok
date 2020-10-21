@@ -118,6 +118,12 @@ public class CalendarActivity extends AppCompatActivity {
                 setResult(RESULT_OK, i);
                 finish();
 
+                break;
+
+            default:
+                Toast.makeText(CalendarActivity.this, "선택 안됨",Toast.LENGTH_SHORT).show();
+                break;
+
         }
                 return super.onOptionsItemSelected(item);
 

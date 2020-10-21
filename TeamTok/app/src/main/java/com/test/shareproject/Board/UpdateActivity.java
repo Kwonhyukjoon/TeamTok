@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.test.shareproject.R;
 import com.test.shareproject.Util.Utils;
@@ -92,7 +93,7 @@ public class UpdateActivity extends AppCompatActivity {
         String content = boardReq.getContent();
 
         String new_starttime = "";
-        String new_endtime ="";
+        String new_endtime = "";
         SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         old_format.setTimeZone(TimeZone.getTimeZone("KST"));
         SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,7 +122,7 @@ public class UpdateActivity extends AppCompatActivity {
                     case 0:
                         Log.i(TAG, Integer.toString(categoryType));
                         category = categoryname;
-                        Log.i("DDD" , ""+categoryname);
+                        Log.i("DDD", "" + categoryname);
                         break;
                     case 1:
                         Log.i(TAG, Integer.toString(categoryType));
@@ -174,18 +175,28 @@ public class UpdateActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 0 && resultCode == RESULT_OK) {
-            BoardReq boardReq = (BoardReq) data.getSerializableExtra("Date");
+            boardReq = (BoardReq) data.getSerializableExtra("Date");
             starttime = boardReq.getStarttime();
             endtime = boardReq.getEndtime();
-            updateSDate.setText(starttime);
-            updateEDate.setText(endtime);
+
+            Log.i("AAA" , "!@#@#" + starttime + " , " + endtime);
+
+            if (starttime.equals(endtime)) {
+                updateSDate.setVisibility(View.GONE);
+                updateEDate.setText(""+starttime);
+                updateEDate.setTextSize(15);
+            } else {
+                updateSDate.setVisibility(View.VISIBLE);
+                updateSDate.setText(starttime);
+                updateEDate.setText(endtime);
+            }
         }
     }
 
     public void setCategorySpinner(String inputCategory) {
         String[] arrSpinner = getResources().getStringArray(R.array.spinner_array);
 
-        for (int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             if (inputCategory.equals(arrSpinner[i])) {
                 Category.setSelection(i);
                 break;
@@ -214,7 +225,7 @@ public class UpdateActivity extends AppCompatActivity {
                 String startDate = updateSDate.getText().toString().trim();
                 String endDate = updateEDate.getText().toString().trim();
 
-                BoardReq boardReq = new BoardReq(board_id , category , title , content , startDate, endDate);
+                BoardReq boardReq = new BoardReq(board_id, category, title, content, startDate, endDate);
 
                 Retrofit retrofit = NetworkClient.getRetrofitClient(UpdateActivity.this);
                 BoardApi boardApi = retrofit.create(BoardApi.class);
@@ -222,23 +233,27 @@ public class UpdateActivity extends AppCompatActivity {
                 SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
                 String token = sp.getString("token", null);
 
-                Call<Res> call = boardApi.updateBoard("Bearer " + token , boardReq);
+                Call<Res> call = boardApi.updateBoard("Bearer " + token, boardReq);
                 call.enqueue(new Callback<Res>() {
                     @Override
                     public void onResponse(Call<Res> call, Response<Res> response) {
                         boardArraylist = response.body().getItems();
                         BoardReq boardupdate = boardArraylist.get(0);
                         Intent i = getIntent();
-                        i.putExtra("update",boardupdate);
-                        setResult(RESULT_OK,i);
+                        i.putExtra("update", boardupdate);
+                        setResult(RESULT_OK, i);
                         finish();
                     }
 
                     @Override
                     public void onFailure(Call<Res> call, Throwable t) {
-                        Log.i("AAA" , ""+t.toString());
+                        Log.i("AAA", "" + t.toString());
                     }
                 });
+                break;
+
+            default:
+                Toast.makeText(UpdateActivity.this, "선택 안됨", Toast.LENGTH_SHORT).show();
                 break;
         }
         return super.onOptionsItemSelected(item);
