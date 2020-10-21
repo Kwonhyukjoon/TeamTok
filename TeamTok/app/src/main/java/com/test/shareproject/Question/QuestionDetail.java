@@ -128,8 +128,6 @@ public class QuestionDetail extends AppCompatActivity {
         question_id = boardReq.getQuestionId();
         email = boardReq.getEmail();
 
-        Log.i("AAA" , "!@#" + email + ","+login_email + "," + token);
-
         String new_date = "";
         detailCategory.setText("[ " + category + " ] ");
         detailTitle.setText(title);
@@ -152,7 +150,7 @@ public class QuestionDetail extends AppCompatActivity {
         is_favorite = getIntent().getIntExtra("is_favorite", -1);
         if (is_favorite == 1) {
             favImg.setImageResource(R.drawable.ic_baseline_favorite_24);
-            txtfav.setText("좋아요 취소");
+            txtfav.setText("좋아요");
         } else if (is_favorite == 0) {
             favImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             txtfav.setText("좋아요");
@@ -204,7 +202,7 @@ public class QuestionDetail extends AppCompatActivity {
                             public void onResponse(Call<Res> call, Response<Res> response) {
                                 favImg.setImageResource(R.drawable.ic_baseline_favorite_24);
                                 Log.i("AAA", "좋아요 좋아요 : " + is_favorite);
-                                txtfav.setText("좋아요 취소");
+                                txtfav.setText("좋아요");
                             }
 
                             @Override

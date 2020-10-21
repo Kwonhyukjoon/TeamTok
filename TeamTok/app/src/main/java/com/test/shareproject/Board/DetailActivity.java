@@ -292,8 +292,6 @@ public class DetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<CommentRes>() {
             @Override
             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-                Log.i("CCC", "" + response.body().getSuccess().toString());
-                Log.i("CCC", "" + response.body().getCnt());
                 commentReqArrayList = response.body().getItems();
                 adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
                 adapter.notifyDataSetChanged();

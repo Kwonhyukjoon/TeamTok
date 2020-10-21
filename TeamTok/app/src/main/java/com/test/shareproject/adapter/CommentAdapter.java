@@ -116,7 +116,6 @@ public class CommentAdapter extends BaseAdapter {
         String email = commentReq.getEmail();
 
         if(login_email != null){
-            Log.i("AAA" , "!@#@#" + login_email + "," + email);
             if (login_email.equals(email)) {
                 delComment.setVisibility(View.VISIBLE);
                 upComment.setVisibility(View.VISIBLE);
