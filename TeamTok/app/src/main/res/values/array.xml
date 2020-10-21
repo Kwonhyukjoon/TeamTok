@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="spinner_array">
+        <item>카테고리</item>
+        <item>Android</item>
+        <item>ios</item>
+        <item>Game</item>
+        <item>Web</item>
+        <item>Server</item>
+        <item>기타</item>
+    </string-array>
+</resources>

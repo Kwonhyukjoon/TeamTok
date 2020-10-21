@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="협동 게시판"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="40dp"
+            android:clickable="true"
+            app:backgroundTint="@color/colorAccent"
+            app:srcCompat="@drawable/plus" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TabHost
+                android:id="@+id/tabHost1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:id="@+id/tab1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                                android:id="@+id/swipeLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            <ListView
+                                    android:id="@+id/listView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#FFFFFF"
+                                    android:cacheColorHint="@color/colorAccent"
+                                    android:divider="#ffffffff"
+                                    android:dividerHeight="7dp"
+                                    android:fadingEdge="none">
+
+                                </ListView>
+                            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                        </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/tab2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                                    android:id="@+id/swipeLayout1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+                                <ListView
+                                    android:id="@+id/listView1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                            </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/tab3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                                android:id="@+id/swipeLayout2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                            <ListView
+                                android:id="@+id/listView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

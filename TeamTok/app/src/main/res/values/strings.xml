@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShareProject</string>
+    <string name="board_name">"자유게시판"</string>
+    <string name="question_name">"질문게시판"</string>
+    <string name="search_name">검색</string>
+    <string name="mypage_name">비밀번호 변경</string>
+</resources>

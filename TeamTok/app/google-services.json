@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "206106234157",
+    "firebase_url": "https://teamtok-2d410.firebaseio.com",
+    "project_id": "teamtok-2d410",
+    "storage_bucket": "teamtok-2d410.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206106234157:android:eb4d85499e5732d46797a4",
+        "android_client_info": {
+          "package_name": "com.test.shareproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206106234157-30a2s9bk4b06pta61ovrq12oefdlo2hs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.test.shareproject",
+            "certificate_hash": "1e344e59194045ced47cc4b2192a7a0727622bd4"
+          }
+        },
+        {
+          "client_id": "206106234157-8r8e1c18239nsl7tf62aadqmdt1ekqu6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIH0WIytAGY8NqcpcuIfD9Bpn2ff4ILc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206106234157-8r8e1c18239nsl7tf62aadqmdt1ekqu6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
