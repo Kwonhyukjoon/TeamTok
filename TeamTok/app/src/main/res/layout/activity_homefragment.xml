@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/txtline"
+            android:padding="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -72,6 +73,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/txtline"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:text="자유게시판"
                     android:textSize="20dp" />
 
@@ -85,6 +89,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="최신 글(5개)"
                         android:textSize="16sp" />
 
@@ -106,6 +112,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="공모중인 글(5개)"
                         android:textSize="16sp" />
 
@@ -125,6 +133,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="인기 글(5개)"
                         android:textSize="16sp" />
 
@@ -138,6 +148,10 @@
                     android:id="@+id/textView9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:background="@drawable/txtline"
                     android:text="질문게시판"
                     android:textSize="20sp" />
 
@@ -151,6 +165,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="최신 질문 글(5개)"
                         android:textSize="16sp" />
 
@@ -170,9 +186,11 @@
                         android:id="@+id/textView14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:text="인기질문 글(5개)"
-                        android:textSize="16sp"
-                        android:gravity="center"/>
+                        android:textSize="16sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView4"

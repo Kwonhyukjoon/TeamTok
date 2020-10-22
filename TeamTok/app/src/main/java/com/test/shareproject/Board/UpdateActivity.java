@@ -58,6 +58,8 @@ public class UpdateActivity extends AppCompatActivity {
 
     String starttime;
     String endtime;
+    String new_starttime = "";
+    String new_endtime = "";
 
     int board_id;
 
@@ -92,8 +94,6 @@ public class UpdateActivity extends AppCompatActivity {
         endtime = boardReq.getEndtime();
         String content = boardReq.getContent();
 
-        String new_starttime = "";
-        String new_endtime = "";
         SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         old_format.setTimeZone(TimeZone.getTimeZone("KST"));
         SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
@@ -163,6 +163,8 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(UpdateActivity.this, CalendarActivity.class);
+                i.putExtra("start",new_starttime);
+                i.putExtra("end" , new_endtime);
                 startActivityForResult(i, 0);
             }
         });

@@ -50,6 +50,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     SharedPreferences sp;
     String token;
 
+
     // 생성자 만들기
     public RecyclerViewAdapter(Context context, ArrayList<BoardReq> boardReqArrayList){
 
@@ -90,6 +91,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return boardReqArrayList.size();
     }
+
 
     // 하나의 셀(템플릿) xml 화면에 있는 구성 요소(텍스트뷰, 이미지뷰 등등)를 여기서 연결한다.
     public class ViewHolder extends RecyclerView.ViewHolder{

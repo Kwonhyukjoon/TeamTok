@@ -31,6 +31,8 @@ public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     ArrayList arrayList;
 
+    String day_full = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +45,10 @@ public class CalendarActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true); //커스터마이징 하기 위해 필요
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
+
+//        Intent i = getIntent();
+//        String start = i.getStringExtra("start");
+//        String end = i.getStringExtra("end");
 
 
         initViews();
@@ -79,7 +85,6 @@ public class CalendarActivity extends AppCompatActivity {
                 String startDate = "null";
                 String endDate = "null";
                 arrayList = new ArrayList<String>();
-                String day_full = "";
                 for (int i = 0; i < days.size(); i++) {
                     Calendar calendar = days.get(i);
                     final int day = calendar.get(Calendar.DAY_OF_MONTH);
