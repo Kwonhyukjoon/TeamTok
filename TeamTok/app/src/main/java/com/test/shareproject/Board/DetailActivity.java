@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +28,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.test.shareproject.Dialog.CommentDialog;
+import com.test.shareproject.Dialog.MypageDialog;
 import com.test.shareproject.R;
 import com.test.shareproject.Util.Utils;
 import com.test.shareproject.adapter.CommentAdapter;
@@ -64,7 +67,7 @@ public class DetailActivity extends AppCompatActivity {
     TextView txtfav;
 
     Button btnComment;
-
+    LinearLayout button;
     BoardReq boardReq;
 
     int board_id;
@@ -107,6 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         detailContent = findViewById(R.id.detailContent);
         com_cnt = findViewById(R.id.com_cnt);
         listView = findViewById(R.id.listView);
+
 
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
@@ -226,6 +230,26 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
         }
+
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("AAA" , "!@#@#!@#@!#@!#@!#@ " + board_id);
+                CommentDialog commentDialog = new CommentDialog(DetailActivity.this);
+                commentDialog.setCommentDialogListener(new CommentDialog.CommentDialogListener() {
+                    @Override
+                    public void clickbtn(int board_id) {
+
+                    }
+                });
+
+                commentDialog.setCancelable(true);
+                commentDialog.show();
+
+            }
+        });
+
 
         getCommentData();
     }
