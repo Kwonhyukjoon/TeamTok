@@ -6,12 +6,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,8 +31,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.test.shareproject.Dialog.CommentDialog;
-import com.test.shareproject.Dialog.MypageDialog;
 import com.test.shareproject.R;
 import com.test.shareproject.Util.Utils;
 import com.test.shareproject.adapter.CommentAdapter;
@@ -44,7 +45,6 @@ import com.test.shareproject.model.CommentRes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
@@ -90,7 +90,11 @@ public class DetailActivity extends AppCompatActivity {
     String login_email;
     String email;
 
+    LinearLayout commentLayout;
+    LinearLayout empty;
 
+    ImageView revert;
+    SwipeRefreshLayout swipeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +107,8 @@ public class DetailActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
+        swipeLayout = findViewById(R.id.swipeLayout);
+
         detailCategory = findViewById(R.id.detailCategory);
         detailTitle = findViewById(R.id.detailTitle);
         Period = findViewById(R.id.Period);
@@ -110,11 +116,15 @@ public class DetailActivity extends AppCompatActivity {
         detailContent = findViewById(R.id.detailContent);
         com_cnt = findViewById(R.id.com_cnt);
         listView = findViewById(R.id.listView);
+        empty = findViewById(R.id.empty);
 
+        listView.setEmptyView(empty);
 
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
         favImg = findViewById(R.id.favImg);
+
+        commentLayout = findViewById(R.id.commentLayout);
 
         sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
         token = sp.getString("token", null);
@@ -136,6 +146,7 @@ public class DetailActivity extends AppCompatActivity {
         detailTitle.setText(title);
         detailContent.setText(content);
         com_cnt.setText("" + cnt);
+
 
         String new_date = "";
         String new_start_time = "";
@@ -232,21 +243,22 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         button = findViewById(R.id.button);
+        if(cnt !=0 ){
+            button.setVisibility(View.VISIBLE);
+        }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("AAA" , "!@#@#!@#@!#@!#@!#@ " + board_id);
-                CommentDialog commentDialog = new CommentDialog(DetailActivity.this);
-                commentDialog.setCommentDialogListener(new CommentDialog.CommentDialogListener() {
-                    @Override
-                    public void clickbtn(int board_id) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(DetailActivity.this.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        });
 
-                    }
-                });
-
-                commentDialog.setCancelable(true);
-                commentDialog.show();
-
+        revert = findViewById(R.id.revert);
+        revert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Progress();
             }
         });
 
@@ -329,6 +341,8 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void addCommentdata() {
         btnComment = findViewById(R.id.btnComment);
@@ -482,6 +496,13 @@ public class DetailActivity extends AppCompatActivity {
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private void Progress(){
+        ProgressDialog progressDialog = new ProgressDialog(DetailActivity.this);
+        progressDialog.setCancelable(true);
+        progressDialog.setProgressStyle(R.drawable.plus);
+        progressDialog.show();
     }
 
 }

@@ -75,20 +75,23 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical">
 
-                            <ListView
-                                android:id="@+id/listView"
+                            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                                android:id="@+id/swipeLayout"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="3dp"
-                                android:layout_marginEnd="3dp"
-                                android:layout_marginBottom="3dp"
-                                android:background="#FFFFFF"
-                                android:cacheColorHint="@color/colorAccent"
-                                android:divider="#ffffffff"
-                                android:dividerHeight="7dp"
-                                android:fadingEdge="none">
+                                android:layout_height="match_parent">
 
-                            </ListView>
+                                <ListView
+                                    android:id="@+id/listView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#FFFFFF"
+                                    android:cacheColorHint="@color/colorAccent"
+                                    android:divider="#ffffffff"
+                                    android:dividerHeight="7dp"
+                                    android:fadingEdge="none">
+
+                                </ListView>
+                            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
                         </LinearLayout>
 
                         <LinearLayout

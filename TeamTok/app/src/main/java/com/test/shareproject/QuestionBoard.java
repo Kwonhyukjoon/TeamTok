@@ -3,6 +3,7 @@ package com.test.shareproject;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.test.shareproject.Question.QuestionWrite;
@@ -52,6 +54,9 @@ public class QuestionBoard extends Fragment {
     Toolbar toolbar;
     TabHost tabHost1;
 
+    SwipeRefreshLayout swipeLayout;
+    SwipeRefreshLayout swipeLayout1;
+
 
     @Nullable
     @Override
@@ -60,7 +65,8 @@ public class QuestionBoard extends Fragment {
         listView = view.findViewById(R.id.listView);
         listView1 = view.findViewById(R.id.listView1);
 
-        setHasOptionsMenu(true);
+        swipeLayout = view.findViewById(R.id.swipeLayout);
+
 
         toolbar = view.findViewById(R.id.toolbar); //툴바설정
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -126,6 +132,22 @@ public class QuestionBoard extends Fragment {
         });
     }
 
+    public void updateNetworkData() {
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getNetworkData();
+                        swipeLayout.setRefreshing(false);
+                    }
+                }, 1000);
+
+            }
+        });
+    }
+
     public void getqtopBoard() {
         Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
         QuestionApi questionApi = retrofit.create(QuestionApi.class);
@@ -153,6 +175,7 @@ public class QuestionBoard extends Fragment {
         super.onResume();
 
         getNetworkData();
+        updateNetworkData();
 
         getqtopBoard();
 
