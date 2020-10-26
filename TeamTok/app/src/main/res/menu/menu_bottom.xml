@@ -5,27 +5,27 @@
     <item
         android:id="@+id/tab1"
         android:enabled="true"
-        android:icon="@drawable/home"
+        android:icon="@drawable/main_icon_01"
         android:title="홈" />
     <item
         android:id="@+id/tab2"
         android:enabled="true"
-        android:icon="@drawable/board"
+        android:icon="@drawable/main_icon_02"
         android:title="게시판" />
     <item
         android:id="@+id/tab3"
         android:enabled="true"
-        android:icon="@drawable/button"
+        android:icon="@drawable/main_icon_03"
         android:title="검색" />
     <item
         android:id="@+id/tab4"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_notifications_24"
+        android:icon="@drawable/main_icon_04"
         android:title="Q&amp;A"/>
     <item
         android:id="@+id/tab5"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_notifications_24"
+        android:icon="@drawable/main_icon_05"
         android:title="My"/>
 
 

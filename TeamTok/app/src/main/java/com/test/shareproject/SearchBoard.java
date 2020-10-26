@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -123,6 +124,11 @@ public class SearchBoard extends Fragment {
             @Override
             public void onClick(View view) {
                 String editsearch = txtsearch.getText().toString().trim();
+
+
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(txtsearch.getWindowToken(),0);
+                txtsearch.setText("");
 
                 Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
                 BoardApi boardApi = retrofit.create(BoardApi.class);
