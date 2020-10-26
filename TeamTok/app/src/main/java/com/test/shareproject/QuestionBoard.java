@@ -66,6 +66,7 @@ public class QuestionBoard extends Fragment {
         listView1 = view.findViewById(R.id.listView1);
 
         swipeLayout = view.findViewById(R.id.swipeLayout);
+        swipeLayout1 = view.findViewById(R.id.swipeLayout1);
 
 
         toolbar = view.findViewById(R.id.toolbar); //툴바설정
@@ -169,6 +170,22 @@ public class QuestionBoard extends Fragment {
         });
     }
 
+    public void updategetqtopBoard() {
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getNetworkData();
+                        swipeLayout1.setRefreshing(false);
+                    }
+                }, 1000);
+
+            }
+        });
+    }
+
 
     @Override
     public void onResume() {
@@ -178,6 +195,7 @@ public class QuestionBoard extends Fragment {
         updateNetworkData();
 
         getqtopBoard();
+        updategetqtopBoard();
 
 
     }

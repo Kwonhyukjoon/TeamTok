@@ -109,6 +109,15 @@
                 android:orientation="horizontal"
                 android:paddingBottom="5dp">
 
+                <ImageView
+                    android:id="@+id/revert"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true"
+                    app:srcCompat="@android:drawable/ic_menu_revert" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,53 +175,36 @@
                 android:background="@drawable/txtline"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="1"
-                    android:text="댓글"
-                    android:textSize="20dp" />
+                    android:layout_weight="0.9"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                <ImageView
-                    android:id="@+id/revert"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:layout_marginRight="5dp"
-                    app:srcCompat="@android:drawable/ic_menu_revert" />
-            </LinearLayout>
+                    <EditText
+                        android:id="@+id/txtComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:background="@drawable/comment_background"
+                        android:ems="10"
+                        android:hint="댓글 입력"
+                        android:inputType="none"
+                        android:padding="10dp"
+                        tools:visibility="visible" />
 
-            <LinearLayout
-                android:id="@+id/commentLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                android:weightSum="6">
+                    <Button
+                        android:id="@+id/btnComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:text="등 록" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/txtComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:background="@drawable/comment_background"
-                    android:ems="10"
-                    android:hint="댓글 입력"
-                    android:inputType="none"
-                    android:padding="10dp"
-                    tools:visibility="visible" />
 
-                <Button
-                    android:id="@+id/btnComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="등록" />
             </LinearLayout>
 
 
@@ -222,92 +214,44 @@
                 android:orientation="vertical">
 
 
-                    <ListView
-                        android:id="@+id/listView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#FFFFFF"
-                        android:cacheColorHint="@color/colorAccent"
-                        android:divider="#ffffffff"
-                        android:dividerHeight="7dp"
-                        android:fadingEdge="none">
+                <ListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    android:cacheColorHint="@color/colorAccent"
+                    android:divider="#ffffffff"
+                    android:dividerHeight="7dp"
+                    android:fadingEdge="none">
 
-                    </ListView>
+                </ListView>
 
-                    <LinearLayout
+                <LinearLayout
 
-                        android:id="@+id/empty"
+                    android:id="@+id/empty"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/txtline"
+                    android:orientation="vertical">
+
+                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@drawable/txtline"
+                        android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:text="댓글이 없습니다."
+                        android:textSize="12dp" />
 
-                        <TextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            android:text="댓글이 없습니다."
-                            android:textSize="12dp" />
-
-                        <TextView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="첫 댓글을 작성해 보세요."
-                            android:textSize="12dp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:background="?attr/selectableItemBackground"
-                            android:clickable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="3dp">
-
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                app:srcCompat="@drawable/comment" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:text="댓글쓰기" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/button"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:orientation="horizontal"
-                        android:padding="3dp"
-                        android:visibility="gone">
+                        android:gravity="center"
+                        android:text="첫 댓글을 작성해 보세요."
+                        android:textSize="12dp" />
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            app:srcCompat="@drawable/comment" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:gravity="center"
-                            android:text="댓글쓰기" />
-                    </LinearLayout>
+                </LinearLayout>
 
             </LinearLayout>
 

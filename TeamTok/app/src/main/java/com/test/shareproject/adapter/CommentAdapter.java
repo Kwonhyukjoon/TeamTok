@@ -151,7 +151,6 @@ public class CommentAdapter extends BaseAdapter {
                         call.enqueue(new Callback<CommentRes>() {
                             @Override
                             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-
                                 ((DetailActivity)DetailActivity.context).minusCnt(response.body().getCnt());
                                 ((DetailActivity)DetailActivity.context).onResume();
                             }

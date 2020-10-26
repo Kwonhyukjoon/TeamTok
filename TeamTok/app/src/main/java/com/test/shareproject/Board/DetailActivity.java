@@ -66,8 +66,10 @@ public class DetailActivity extends AppCompatActivity {
     TextView com_cnt;
     TextView txtfav;
 
+    EditText txtComment;
     Button btnComment;
-    LinearLayout button;
+    EditText nottxtComment;
+    Button notbtnComment;
     BoardReq boardReq;
 
     int board_id;
@@ -75,9 +77,9 @@ public class DetailActivity extends AppCompatActivity {
     String token;
     int cmt_no;
     int is_favorite;
+    int cnt;
 
     ListView listView;
-    EditText txtComment;
     CommentAdapter adapter;
 
     Toolbar toolbar;
@@ -90,11 +92,11 @@ public class DetailActivity extends AppCompatActivity {
     String login_email;
     String email;
 
-    LinearLayout commentLayout;
     LinearLayout empty;
 
     ImageView revert;
     SwipeRefreshLayout swipeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,11 +126,10 @@ public class DetailActivity extends AppCompatActivity {
         txtfav = findViewById(R.id.txtfav);
         favImg = findViewById(R.id.favImg);
 
-        commentLayout = findViewById(R.id.commentLayout);
 
         sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
         token = sp.getString("token", null);
-        login_email = sp.getString("email",null);
+        login_email = sp.getString("email", null);
 
         boardReq = (BoardReq) getIntent().getSerializableExtra("detail");
         String category = boardReq.getCategory();
@@ -137,7 +138,7 @@ public class DetailActivity extends AppCompatActivity {
         String startTime = boardReq.getStarttime();
         String endTime = boardReq.getEndDate();
         String content = boardReq.getContent();
-        int cnt = boardReq.getCom_cnt();
+        cnt = boardReq.getCom_cnt();
         board_id = boardReq.getBoardId();
         email = boardReq.getEmail();
 
@@ -242,25 +243,6 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
 
-        button = findViewById(R.id.button);
-        if(cnt !=0 ){
-            button.setVisibility(View.VISIBLE);
-        }
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(DetailActivity.this.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
-        });
-
-        revert = findViewById(R.id.revert);
-        revert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Progress();
-            }
-        });
 
 
         getCommentData();
@@ -276,14 +258,14 @@ public class DetailActivity extends AppCompatActivity {
         String new_end_time = "";
 
         if (requestCode == 0 && resultCode == RESULT_OK) {
-            boardReq  = (BoardReq) data.getSerializableExtra("update");
+            boardReq = (BoardReq) data.getSerializableExtra("update");
             detailCategory.setText("[ " + boardReq.getCategory() + " ] ");
             detailTitle.setText(boardReq.getTitle());
             detailContent.setText(boardReq.getContent());
             String created_at = boardReq.getCreated_at();
             String startTime = boardReq.getStarttime();
             String endTime = boardReq.getEndtime();
-            Log.i("AAA" , "!@#@#" + startTime + " , " + endTime);
+
             SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             old_format.setTimeZone(TimeZone.getTimeZone("KST"));
             SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
@@ -302,6 +284,17 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    public void comment(){
+        revert = findViewById(R.id.revert);
+        revert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getCommentData();
+            }
+        });
+
+    }
+
 
     @Override
     public void onResume() {
@@ -311,7 +304,7 @@ public class DetailActivity extends AppCompatActivity {
 
         addCommentdata();
 
-
+        comment();
 
 
     }
@@ -329,6 +322,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
                 commentReqArrayList = response.body().getItems();
+                Log.i("AAA" , "!@#@!#" + response.body().getCnt());
                 adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
                 adapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listView);
@@ -343,50 +337,49 @@ public class DetailActivity extends AppCompatActivity {
     }
 
 
-
     private void addCommentdata() {
-        btnComment = findViewById(R.id.btnComment);
-        txtComment = findViewById(R.id.txtComment);
-        btnComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String comment = txtComment.getText().toString().trim();
-                if (comment.isEmpty()) {
-                    Toast.makeText(DetailActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (token == null) {
-                    Toast.makeText(DetailActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
-                    txtComment.setText("");
-                    return;
-                }
-
-                CommentReq addReq = new CommentReq(cmt_no, board_id, comment);
-                Retrofit retrofit = NetworkClient.getRetrofitClient(DetailActivity.this);
-                CommentApi commentApi = retrofit.create(CommentApi.class);
-
-                SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
-                String token = sp.getString("token", null);
-
-                Call<CommentRes> call = commentApi.addComment("Bearer " + token, addReq);
-                call.enqueue(new Callback<CommentRes>() {
-                    @Override
-                    public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
+            btnComment = findViewById(R.id.btnComment);
+            txtComment = findViewById(R.id.txtComment);
+            btnComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String comment = txtComment.getText().toString().trim();
+                    if (comment.isEmpty()) {
+                        Toast.makeText(DetailActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (token == null) {
+                        Toast.makeText(DetailActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
                         txtComment.setText("");
-                        commentReqArrayList = response.body().getItems();
-                        com_cnt.setText("" + response.body().getCnt());
-                        adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
-                        listView.setAdapter(adapter);
-                        setListViewHeightBasedOnChildren(listView);
-                        adapter.notifyDataSetChanged();
+                        return;
                     }
 
-                    @Override
-                    public void onFailure(Call<CommentRes> call, Throwable t) {
-                    }
-                });
-            }
-        });
+                    CommentReq addReq = new CommentReq(cmt_no, board_id, comment);
+                    Retrofit retrofit = NetworkClient.getRetrofitClient(DetailActivity.this);
+                    CommentApi commentApi = retrofit.create(CommentApi.class);
+
+                    SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
+                    String token = sp.getString("token", null);
+
+                    Call<CommentRes> call = commentApi.addComment("Bearer " + token, addReq);
+                    call.enqueue(new Callback<CommentRes>() {
+                        @Override
+                        public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
+                            txtComment.setText("");
+                            commentReqArrayList = response.body().getItems();
+                            com_cnt.setText("" + response.body().getCnt());
+                            adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
+                            listView.setAdapter(adapter);
+                            setListViewHeightBasedOnChildren(listView);
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onFailure(Call<CommentRes> call, Throwable t) {
+                        }
+                    });
+                }
+            });
 
     }
 
@@ -402,7 +395,7 @@ public class DetailActivity extends AppCompatActivity {
             inflater.inflate(R.menu.menu_board_not, menu);
         }
 
-        if (login_email != null){
+        if (login_email != null) {
             if (login_email.equals(email)) {
                 inflater.inflate(R.menu.menu_board, menu);
             } else {
@@ -424,7 +417,7 @@ public class DetailActivity extends AppCompatActivity {
 
             case R.id.btn_update:
                 Intent updateintent = new Intent(DetailActivity.this, UpdateActivity.class);
-                Log.i("AAA" , "!@#" + boardReq.getTitle());
+                Log.i("AAA", "!@#" + boardReq.getTitle());
                 updateintent.putExtra("update", boardReq);
                 startActivityForResult(updateintent, 0);
                 break;
@@ -498,11 +491,5 @@ public class DetailActivity extends AppCompatActivity {
         listView.requestLayout();
     }
 
-    private void Progress(){
-        ProgressDialog progressDialog = new ProgressDialog(DetailActivity.this);
-        progressDialog.setCancelable(true);
-        progressDialog.setProgressStyle(R.drawable.plus);
-        progressDialog.show();
-    }
 
 }
