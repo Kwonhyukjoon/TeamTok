@@ -133,7 +133,6 @@ public class Mypage extends Fragment {
         call.enqueue(new Callback<Res>() {
             @Override
             public void onResponse(Call<Res> call, Response<Res> response) {
-                Log.i("AAA" , "123123213123" + response.body().getItems().get(0).getType());
                 boardArraylist = response.body().getItems();
                 adapter = new MypageListAdapter(getActivity(), boardArraylist);
                 adapter.notifyDataSetChanged();

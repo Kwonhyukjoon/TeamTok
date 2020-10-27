@@ -50,13 +50,58 @@
             android:id="@+id/updateTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
             android:background="@null"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:hint="제목"
+            android:padding="8dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/txtline">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:background="@null"
+            android:inputType="textMultiLine"
             android:padding="8dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:hint="제목을 입력해주세요." />
+            android:text="기간 : " />
+
+        <TextView
+            android:id="@+id/updateSDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="시작날짜"
+            />
+
+        <TextView
+            android:id="@+id/updateEDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="마감날짜"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/btnDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="등록" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -70,45 +115,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/txtline"
             android:gravity="top"
-            android:hint="내용을 입력ㅎ주세요."
-            android:inputType="none"
+            android:hint="내용"
+            android:inputType="textMultiLine"
             android:padding="8dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="5dp">
-
-        <TextView
-            android:id="@+id/updateSDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="시작날짜"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/updateEDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="마감날짜"
-            android:inputType="textPersonName" />
-
-        <Button
-            android:id="@+id/btnDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="등록" />
 
     </LinearLayout>
 

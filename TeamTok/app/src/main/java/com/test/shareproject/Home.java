@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,7 @@ public class Home extends Fragment {
 
     ArrayList<BoardReq> boardArraylist = new ArrayList<>();
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class Home extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
         recyclerView1 = view.findViewById(R.id.recyclerView1);
         recyclerView1.setHasFixedSize(true);

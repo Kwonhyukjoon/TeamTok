@@ -3,10 +3,13 @@ package com.test.shareproject.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.provider.Contacts;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
 public class QCommentAdapter extends BaseAdapter {
@@ -50,6 +54,7 @@ public class QCommentAdapter extends BaseAdapter {
 
     CommentReq commentReq;
     int question_id;
+    private Object Context;
 
 
     public QCommentAdapter(Context mContext, ArrayList<CommentReq> commentReqArrayList) {
@@ -78,7 +83,7 @@ public class QCommentAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
 
         view = mLayoutInflater.inflate(R.layout.comment_row, null);
-        SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
         String token = sp.getString("token", null);
         int index = position;
         commentReq = commentReqArrayList.get(index);
@@ -112,7 +117,7 @@ public class QCommentAdapter extends BaseAdapter {
         String login_email = sharedPreferences.getString("email", null);
         String email = commentReq.getEmail();
 
-        if(login_email != null){
+        if (login_email != null) {
             if (login_email.equals(email)) {
 
             } else {
@@ -136,23 +141,21 @@ public class QCommentAdapter extends BaseAdapter {
                         question_id = commentReq.getQuestion_id();
                         CommentReq delReq = commentReqArrayList.get(index);
                         int cmt_no = delReq.getCmt_no();
-                        CommentReq id = new CommentReq(cmt_no, question_id,0,0);
+                        CommentReq id = new CommentReq(cmt_no, question_id, 0, 0);
 
                         Retrofit retrofit = NetworkClient.getRetrofitClient(mContext);
                         CommentApi commentApi = retrofit.create(CommentApi.class);
 
-                        SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
                         String token = sp.getString("token", null);
 
                         Call<CommentRes> call = commentApi.deleteqComment("Bearer " + token, id);
                         call.enqueue(new Callback<CommentRes>() {
                             @Override
                             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-                                Log.i("AAA", "!@#!@#!@#!@" + response.body().getItems().get(0).getNickname());
-                                Log.i("AAA" , "!#!@#!@#" + response.body().getCnt());
 
-                                ((QuestionDetail)QuestionDetail.context).minusCnt(response.body().getCnt());
-                                ((QuestionDetail)QuestionDetail.context).onResume();
+                                ((QuestionDetail) QuestionDetail.context).minusCnt(response.body().getCnt());
+                                ((QuestionDetail) QuestionDetail.context).onResume();
                             }
 
                             @Override
@@ -162,7 +165,8 @@ public class QCommentAdapter extends BaseAdapter {
                         });
 
                     }
-                });builder.setNegativeButton("아니오",
+                });
+                builder.setNegativeButton("아니오",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 builder.setCancelable(true);
@@ -180,6 +184,8 @@ public class QCommentAdapter extends BaseAdapter {
                 builder.setTitle("댓글 수정");
                 final EditText uptxt = new EditText(mContext);
                 builder.setView(uptxt);
+
+
                 int index = position;
                 CommentReq upReq = commentReqArrayList.get(index);
                 String before_comment = upReq.getComment();
@@ -189,7 +195,7 @@ public class QCommentAdapter extends BaseAdapter {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 String comment = uptxt.getText().toString().trim();
-                                CommentReq commentReq = new CommentReq(cmt_no , question_id , comment , 0);
+                                CommentReq commentReq = new CommentReq(cmt_no, question_id, comment, 0);
 
                                 Retrofit retrofit = NetworkClient.getRetrofitClient(mContext);
                                 CommentApi commentApi = retrofit.create(CommentApi.class);
@@ -197,12 +203,12 @@ public class QCommentAdapter extends BaseAdapter {
                                 SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
                                 String token = sp.getString("token", null);
 
-                                Call<CommentRes> call = commentApi.updateqComment("Bearer " + token , commentReq);
+                                Call<CommentRes> call = commentApi.updateqComment("Bearer " + token, commentReq);
                                 call.enqueue(new Callback<CommentRes>() {
                                     @Override
                                     public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-                                        Log.i("AAA" , ""+response.body().getSuccess().toString());
-                                        ((QuestionDetail)QuestionDetail.context).onResume();
+                                        Log.i("AAA", "" + response.body().getSuccess().toString());
+                                        ((QuestionDetail) QuestionDetail.context).onResume();
                                     }
 
                                     @Override
@@ -220,6 +226,7 @@ public class QCommentAdapter extends BaseAdapter {
                                 dialog.dismiss();
                             }
                         });
+
                 builder.show();
             }
         });

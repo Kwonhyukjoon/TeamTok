@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +93,12 @@ public class QuestionDetail extends AppCompatActivity {
     String login_email;
     String email;
 
+    LinearLayout empty;
+
+    LinearLayout revert;
+    ScrollView scroll;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,11 +111,15 @@ public class QuestionDetail extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
+
         detailCategory = findViewById(R.id.detailCategory);
         detailTitle = findViewById(R.id.detailTitle);
         detailEtc = findViewById(R.id.detailEtc);
         detailContent = findViewById(R.id.detailContent);
         listView = findViewById(R.id.listView);
+        empty = findViewById(R.id.empty);
+
+        listView.setEmptyView(empty);
 
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
@@ -127,8 +139,6 @@ public class QuestionDetail extends AppCompatActivity {
         int cnt = boardReq.getCom_cnt();
         question_id = boardReq.getQuestionId();
         email = boardReq.getEmail();
-
-        Log.i("AAA" , "!@#" + email + ","+login_email + "," + token);
 
         String new_date = "";
         detailCategory.setText("[ " + category + " ] ");
@@ -152,7 +162,7 @@ public class QuestionDetail extends AppCompatActivity {
         is_favorite = getIntent().getIntExtra("is_favorite", -1);
         if (is_favorite == 1) {
             favImg.setImageResource(R.drawable.ic_baseline_favorite_24);
-            txtfav.setText("좋아요 취소");
+            txtfav.setText("좋아요");
         } else if (is_favorite == 0) {
             favImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             txtfav.setText("좋아요");
@@ -204,7 +214,7 @@ public class QuestionDetail extends AppCompatActivity {
                             public void onResponse(Call<Res> call, Response<Res> response) {
                                 favImg.setImageResource(R.drawable.ic_baseline_favorite_24);
                                 Log.i("AAA", "좋아요 좋아요 : " + is_favorite);
-                                txtfav.setText("좋아요 취소");
+                                txtfav.setText("좋아요");
                             }
 
                             @Override
@@ -276,6 +286,10 @@ public class QuestionDetail extends AppCompatActivity {
     private void addCommentdata() {
         btnComment = findViewById(R.id.btnComment);
         txtComment = findViewById(R.id.txtComment);
+        if (token == null) {
+            txtComment.setEnabled(false);
+            btnComment.setEnabled(false);
+        }
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -297,6 +311,12 @@ public class QuestionDetail extends AppCompatActivity {
                 call.enqueue(new Callback<CommentRes>() {
                     @Override
                     public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
+                        scroll.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
                         txtComment.setText("");
                         commentReqArrayList = response.body().getItems();
                         com_cnt.setText(""+response.body().getCnt());
@@ -316,6 +336,17 @@ public class QuestionDetail extends AppCompatActivity {
 
     }
 
+    public void comment(){
+        revert = findViewById(R.id.revert);
+        revert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getCommentlist();
+            }
+        });
+
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -324,6 +355,7 @@ public class QuestionDetail extends AppCompatActivity {
 
         addCommentdata();
 
+        comment();
 
     }
 
@@ -395,7 +427,7 @@ public class QuestionDetail extends AppCompatActivity {
                                             });
                                         }
                                     });
-                            builder.setNegativeButton("네니오",
+                            builder.setNegativeButton("아니오",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             builder.setCancelable(true);

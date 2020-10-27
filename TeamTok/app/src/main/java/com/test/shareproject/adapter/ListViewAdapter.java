@@ -222,7 +222,6 @@ public class ListViewAdapter extends BaseAdapter {
                         call.enqueue(new Callback<Res>() {
                             @Override
                             public void onResponse(Call<Res> call, Response<Res> response) {
-                                Log.i("AAA", "!@#!@#!@#! 여기!");
                                 Intent detailintent = new Intent(mActivity, QuestionDetail.class);
                                 detailintent.putExtra("detail", boardReq);
                                 mActivity.startActivity(detailintent);

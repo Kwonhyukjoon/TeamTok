@@ -215,7 +215,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
                 UserReq userReq = new UserReq(id);
                 if (id.isEmpty()) {
-                    Toast.makeText(JoinActivity.this, "이메일을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JoinActivity.this, R.string.login_err_1, Toast.LENGTH_SHORT).show();
                     return;
                 }
 

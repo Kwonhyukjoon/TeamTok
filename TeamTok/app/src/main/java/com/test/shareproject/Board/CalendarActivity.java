@@ -31,6 +31,8 @@ public class CalendarActivity extends AppCompatActivity {
     CalendarView calendarView;
     ArrayList arrayList;
 
+    String day_full = "";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,7 +81,6 @@ public class CalendarActivity extends AppCompatActivity {
                 String startDate = "null";
                 String endDate = "null";
                 arrayList = new ArrayList<String>();
-                String day_full = "";
                 for (int i = 0; i < days.size(); i++) {
                     Calendar calendar = days.get(i);
                     final int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -117,6 +118,12 @@ public class CalendarActivity extends AppCompatActivity {
                 i.putExtra("Date", boardReq);
                 setResult(RESULT_OK, i);
                 finish();
+
+                break;
+
+            default:
+                Toast.makeText(CalendarActivity.this, "선택 안됨",Toast.LENGTH_SHORT).show();
+                break;
 
         }
                 return super.onOptionsItemSelected(item);

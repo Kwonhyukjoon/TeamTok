@@ -116,7 +116,6 @@ public class CommentAdapter extends BaseAdapter {
         String email = commentReq.getEmail();
 
         if(login_email != null){
-            Log.i("AAA" , "!@#@#" + login_email + "," + email);
             if (login_email.equals(email)) {
                 delComment.setVisibility(View.VISIBLE);
                 upComment.setVisibility(View.VISIBLE);
@@ -152,7 +151,6 @@ public class CommentAdapter extends BaseAdapter {
                         call.enqueue(new Callback<CommentRes>() {
                             @Override
                             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-
                                 ((DetailActivity)DetailActivity.context).minusCnt(response.body().getCnt());
                                 ((DetailActivity)DetailActivity.context).onResume();
                             }

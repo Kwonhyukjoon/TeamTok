@@ -6,24 +6,29 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +46,6 @@ import com.test.shareproject.model.CommentRes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
@@ -63,8 +67,10 @@ public class DetailActivity extends AppCompatActivity {
     TextView com_cnt;
     TextView txtfav;
 
+    EditText txtComment;
     Button btnComment;
-
+    EditText nottxtComment;
+    Button notbtnComment;
     BoardReq boardReq;
 
     int board_id;
@@ -72,9 +78,9 @@ public class DetailActivity extends AppCompatActivity {
     String token;
     int cmt_no;
     int is_favorite;
+    int cnt;
 
     ListView listView;
-    EditText txtComment;
     CommentAdapter adapter;
 
     Toolbar toolbar;
@@ -87,6 +93,10 @@ public class DetailActivity extends AppCompatActivity {
     String login_email;
     String email;
 
+    LinearLayout empty;
+
+    LinearLayout revert;
+    ScrollView scroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
+
         detailCategory = findViewById(R.id.detailCategory);
         detailTitle = findViewById(R.id.detailTitle);
         Period = findViewById(R.id.Period);
@@ -107,14 +118,20 @@ public class DetailActivity extends AppCompatActivity {
         detailContent = findViewById(R.id.detailContent);
         com_cnt = findViewById(R.id.com_cnt);
         listView = findViewById(R.id.listView);
+        empty = findViewById(R.id.empty);
+
+        listView.setEmptyView(empty);
 
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
         favImg = findViewById(R.id.favImg);
+        scroll = findViewById(R.id.scroll);
+
 
         sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
         token = sp.getString("token", null);
-        login_email = sp.getString("email",null);
+        login_email = sp.getString("email", null);
+
 
         boardReq = (BoardReq) getIntent().getSerializableExtra("detail");
         String category = boardReq.getCategory();
@@ -123,7 +140,7 @@ public class DetailActivity extends AppCompatActivity {
         String startTime = boardReq.getStarttime();
         String endTime = boardReq.getEndDate();
         String content = boardReq.getContent();
-        int cnt = boardReq.getCom_cnt();
+        cnt = boardReq.getCom_cnt();
         board_id = boardReq.getBoardId();
         email = boardReq.getEmail();
 
@@ -132,6 +149,7 @@ public class DetailActivity extends AppCompatActivity {
         detailTitle.setText(title);
         detailContent.setText(content);
         com_cnt.setText("" + cnt);
+
 
         String new_date = "";
         String new_start_time = "";
@@ -187,7 +205,6 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Res> call, Response<Res> response) {
                                 favImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                                Log.i("AAA", "좋아요 : " + is_favorite);
                                 txtfav.setText("좋아요");
                             }
 
@@ -227,6 +244,7 @@ public class DetailActivity extends AppCompatActivity {
             });
         }
 
+
         getCommentData();
     }
 
@@ -240,14 +258,14 @@ public class DetailActivity extends AppCompatActivity {
         String new_end_time = "";
 
         if (requestCode == 0 && resultCode == RESULT_OK) {
-            boardReq  = (BoardReq) data.getSerializableExtra("update");
+            boardReq = (BoardReq) data.getSerializableExtra("update");
             detailCategory.setText("[ " + boardReq.getCategory() + " ] ");
             detailTitle.setText(boardReq.getTitle());
             detailContent.setText(boardReq.getContent());
             String created_at = boardReq.getCreated_at();
             String startTime = boardReq.getStarttime();
             String endTime = boardReq.getEndtime();
-            Log.i("AAA" , "!@#@#" + startTime + " , " + endTime);
+
             SimpleDateFormat old_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             old_format.setTimeZone(TimeZone.getTimeZone("KST"));
             SimpleDateFormat new_format = new SimpleDateFormat("yyyy-MM-dd");
@@ -266,6 +284,17 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    public void comment() {
+        revert = findViewById(R.id.revert);
+        revert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getCommentData();
+            }
+        });
+
+    }
+
 
     @Override
     public void onResume() {
@@ -275,7 +304,7 @@ public class DetailActivity extends AppCompatActivity {
 
         addCommentdata();
 
-
+        comment();
 
 
     }
@@ -292,9 +321,8 @@ public class DetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<CommentRes>() {
             @Override
             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-                Log.i("CCC", "" + response.body().getSuccess().toString());
-                Log.i("CCC", "" + response.body().getCnt());
                 commentReqArrayList = response.body().getItems();
+                Log.i("AAA", "!@#@!#" + response.body().getCnt());
                 adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
                 adapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listView);
@@ -308,9 +336,14 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+
     private void addCommentdata() {
         btnComment = findViewById(R.id.btnComment);
         txtComment = findViewById(R.id.txtComment);
+        if (token == null) {
+            txtComment.setEnabled(false);
+            btnComment.setEnabled(false);
+        }
         btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -336,6 +369,12 @@ public class DetailActivity extends AppCompatActivity {
                 call.enqueue(new Callback<CommentRes>() {
                     @Override
                     public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
+                        scroll.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
                         txtComment.setText("");
                         commentReqArrayList = response.body().getItems();
                         com_cnt.setText("" + response.body().getCnt());
@@ -366,7 +405,7 @@ public class DetailActivity extends AppCompatActivity {
             inflater.inflate(R.menu.menu_board_not, menu);
         }
 
-        if (login_email != null){
+        if (login_email != null) {
             if (login_email.equals(email)) {
                 inflater.inflate(R.menu.menu_board, menu);
             } else {
@@ -388,7 +427,7 @@ public class DetailActivity extends AppCompatActivity {
 
             case R.id.btn_update:
                 Intent updateintent = new Intent(DetailActivity.this, UpdateActivity.class);
-                Log.i("AAA" , "!@#" + boardReq.getTitle());
+                Log.i("AAA", "!@#" + boardReq.getTitle());
                 updateintent.putExtra("update", boardReq);
                 startActivityForResult(updateintent, 0);
                 break;
@@ -409,7 +448,6 @@ public class DetailActivity extends AppCompatActivity {
 
                                     SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
                                     String token = sp.getString("token", null);
-                                    Log.i("AAA", "권혁준 토큰 : " + token);
 
                                     Call<Res> call = boardApi.deleteBoard("Bearer " + token, id);
                                     call.enqueue(new Callback<Res>() {
@@ -461,5 +499,6 @@ public class DetailActivity extends AppCompatActivity {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
+
 
 }

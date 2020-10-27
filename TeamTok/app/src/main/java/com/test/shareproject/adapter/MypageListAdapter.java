@@ -51,7 +51,6 @@ public class MypageListAdapter extends BaseAdapter {
 
     SharedPreferences sp;
 
-    View view;
 
     public MypageListAdapter(Context mContext, ArrayList<BoardReq> boardArrayList) {
         this.mContext = mContext;
@@ -132,7 +131,7 @@ public class MypageListAdapter extends BaseAdapter {
         }
 
         if (endTime == null ){
-            txtNickname.setText(nickname + " · " + "조회 " + boardReq.getView_cnt());
+            txtNickname.setText(nickname + " · " + new_date + " · " + "조회 " + boardReq.getView_cnt());
             Period.setVisibility(View.GONE);
         }else {
             Period.setText("기간 : " + new_start_time + " ~ " + new_end_time);
@@ -161,17 +160,16 @@ public class MypageListAdapter extends BaseAdapter {
                 SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
                 String token = sp.getString("token", null);
 
-                if(token == null){
-                    Toast.makeText(mContext,"로그인 해주세용.",Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 Call<Res> call = boardApi.viewBoard("Bearer " + token, id);
                 call.enqueue(new Callback<Res>() {
                     @Override
                     public void onResponse(Call<Res> call, Response<Res> response) {
+                        int is_favorite = response.body().getData().get(0).getIs_favorite();
+                        Log.i("AAA" , "afdsfadfa" + is_favorite);
                         Intent detailintent = new Intent(mContext, DetailActivity.class);
                         detailintent.putExtra("detail", boardReq);
+                        detailintent.putExtra("is_favorite", is_favorite);
                         mContext.startActivity(detailintent);
                     }
 
@@ -187,18 +185,16 @@ public class MypageListAdapter extends BaseAdapter {
 
                     SharedPreferences sp = mContext.getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
                     String token = sp.getString("token", null);
-                    if(token == null){
-                        Toast.makeText(mContext,"로그인 해주세용.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+
 
                     Call<Res> call = questionApi.viewQuestion("Bearer " + token, id);
                     call.enqueue(new Callback<Res>() {
                         @Override
                         public void onResponse(Call<Res> call, Response<Res> response) {
-                            Log.i("AAA"  , "fadsfasd"+response.body().getSuccess().toString());
+                            int is_favorite = response.body().getItems().get(0).getIs_favorite();
                             Intent detailintent = new Intent(mContext, QuestionDetail.class);
                             detailintent.putExtra("detail", boardReq);
+                            detailintent.putExtra("is_favorite", is_favorite);
                             mContext.startActivity(detailintent);
                         }
 

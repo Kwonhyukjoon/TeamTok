@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 
+import com.test.shareproject.Board.DetailActivity;
 import com.test.shareproject.adapter.ListViewAdapter;
 import com.test.shareproject.api.BoardApi;
 import com.test.shareproject.api.NetworkClient;
@@ -131,13 +133,15 @@ public class SearchBoard extends Fragment {
                     @Override
                     public void onResponse(Call<Res> call, Response<Res> response) {
                         try {
-                            Log.i("CCC", "" + response.body().getSuccess().toString());
-                            Log.i("CCC", "" + response.toString());
-                            Log.i("CCC", "갯수 : " + response.body().getCnt());
                             boardArraylist = response.body().getItems();
                             adapter = new ListViewAdapter(getActivity(), boardArraylist);
                             listView.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+
                         } catch (NullPointerException e) {
                             Log.i("CCC", "" + e.toString());
                         }

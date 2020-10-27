@@ -146,13 +146,15 @@ public class WriteActivity extends AppCompatActivity {
             endDate = boardReq.getEndtime();
 
 
-            if(startDate.equals(endDate)){
-                txtEDate.setVisibility(View.GONE);
-                txtSDate.setTextSize(20);
+            if (startDate.equals(endDate)) {
+                txtSDate.setVisibility(View.GONE);
+                txtEDate.setText(""+startDate);
+                txtEDate.setTextSize(15);
+            } else {
+                txtSDate.setVisibility(View.VISIBLE);
+                txtSDate.setText(startDate);
+                txtEDate.setText(endDate);
             }
-
-            txtSDate.setText(startDate);
-            txtEDate.setText(endDate);
         }
 
     }
@@ -224,6 +226,12 @@ public class WriteActivity extends AppCompatActivity {
                         Log.i("AAA", "error : " + t.toString());
                     }
                 });
+
+                break;
+
+            default:
+                Toast.makeText(WriteActivity.this, "선택 안됨",Toast.LENGTH_SHORT).show();
+                break;
 
 
         }

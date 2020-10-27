@@ -80,7 +80,6 @@ public class ListBoard extends Fragment{
         listView1 = view.findViewById(R.id.listView1);
         listView2 = view.findViewById(R.id.listView2);
 
-//        setHasOptionsMenu(true);
         toolbar = view.findViewById(R.id.toolbar); //툴바설정
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar actionBar = ((AppCompatActivity)getActivity()).getSupportActionBar();
