@@ -26,6 +26,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -109,14 +110,20 @@
                 android:orientation="horizontal"
                 android:paddingBottom="5dp">
 
-                <ImageView
+                <LinearLayout
                     android:id="@+id/revert"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:clickable="true"
-                    app:srcCompat="@android:drawable/ic_menu_revert" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        app:srcCompat="@android:drawable/ic_menu_revert" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -248,6 +255,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
+                        android:paddingBottom="15dp"
                         android:text="첫 댓글을 작성해 보세요."
                         android:textSize="12dp" />
 

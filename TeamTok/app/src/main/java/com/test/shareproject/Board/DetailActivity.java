@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,8 +95,8 @@ public class DetailActivity extends AppCompatActivity {
 
     LinearLayout empty;
 
-    ImageView revert;
-    SwipeRefreshLayout swipeLayout;
+    LinearLayout revert;
+    ScrollView scroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +110,6 @@ public class DetailActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼, 디폴트로 true만 해도 백버튼이 생김
 
-        swipeLayout = findViewById(R.id.swipeLayout);
 
         detailCategory = findViewById(R.id.detailCategory);
         detailTitle = findViewById(R.id.detailTitle);
@@ -125,11 +125,13 @@ public class DetailActivity extends AppCompatActivity {
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
         favImg = findViewById(R.id.favImg);
+        scroll = findViewById(R.id.scroll);
 
 
         sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
         token = sp.getString("token", null);
         login_email = sp.getString("email", null);
+
 
         boardReq = (BoardReq) getIntent().getSerializableExtra("detail");
         String category = boardReq.getCategory();
@@ -203,7 +205,6 @@ public class DetailActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call<Res> call, Response<Res> response) {
                                 favImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                                Log.i("AAA", "좋아요 : " + is_favorite);
                                 txtfav.setText("좋아요");
                             }
 
@@ -242,7 +243,6 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
         }
-
 
 
         getCommentData();
@@ -284,7 +284,7 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    public void comment(){
+    public void comment() {
         revert = findViewById(R.id.revert);
         revert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,7 +322,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
                 commentReqArrayList = response.body().getItems();
-                Log.i("AAA" , "!@#@!#" + response.body().getCnt());
+                Log.i("AAA", "!@#@!#" + response.body().getCnt());
                 adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
                 adapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listView);
@@ -338,48 +338,58 @@ public class DetailActivity extends AppCompatActivity {
 
 
     private void addCommentdata() {
-            btnComment = findViewById(R.id.btnComment);
-            txtComment = findViewById(R.id.txtComment);
-            btnComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String comment = txtComment.getText().toString().trim();
-                    if (comment.isEmpty()) {
-                        Toast.makeText(DetailActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (token == null) {
-                        Toast.makeText(DetailActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
-                        txtComment.setText("");
-                        return;
-                    }
-
-                    CommentReq addReq = new CommentReq(cmt_no, board_id, comment);
-                    Retrofit retrofit = NetworkClient.getRetrofitClient(DetailActivity.this);
-                    CommentApi commentApi = retrofit.create(CommentApi.class);
-
-                    SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
-                    String token = sp.getString("token", null);
-
-                    Call<CommentRes> call = commentApi.addComment("Bearer " + token, addReq);
-                    call.enqueue(new Callback<CommentRes>() {
-                        @Override
-                        public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
-                            txtComment.setText("");
-                            commentReqArrayList = response.body().getItems();
-                            com_cnt.setText("" + response.body().getCnt());
-                            adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
-                            listView.setAdapter(adapter);
-                            setListViewHeightBasedOnChildren(listView);
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onFailure(Call<CommentRes> call, Throwable t) {
-                        }
-                    });
+        btnComment = findViewById(R.id.btnComment);
+        txtComment = findViewById(R.id.txtComment);
+        if (token == null) {
+            txtComment.setEnabled(false);
+            btnComment.setEnabled(false);
+        }
+        btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String comment = txtComment.getText().toString().trim();
+                if (comment.isEmpty()) {
+                    Toast.makeText(DetailActivity.this, "내용을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
+                if (token == null) {
+                    Toast.makeText(DetailActivity.this, "로그인을 해주세요.", Toast.LENGTH_SHORT).show();
+                    txtComment.setText("");
+                    return;
+                }
+
+                CommentReq addReq = new CommentReq(cmt_no, board_id, comment);
+                Retrofit retrofit = NetworkClient.getRetrofitClient(DetailActivity.this);
+                CommentApi commentApi = retrofit.create(CommentApi.class);
+
+                SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, MODE_PRIVATE);
+                String token = sp.getString("token", null);
+
+                Call<CommentRes> call = commentApi.addComment("Bearer " + token, addReq);
+                call.enqueue(new Callback<CommentRes>() {
+                    @Override
+                    public void onResponse(Call<CommentRes> call, Response<CommentRes> response) {
+                        scroll.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scroll.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+                        txtComment.setText("");
+                        commentReqArrayList = response.body().getItems();
+                        com_cnt.setText("" + response.body().getCnt());
+                        adapter = new CommentAdapter(DetailActivity.this, commentReqArrayList);
+                        listView.setAdapter(adapter);
+                        setListViewHeightBasedOnChildren(listView);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<CommentRes> call, Throwable t) {
+                    }
+                });
+            }
+        });
 
     }
 
@@ -438,7 +448,6 @@ public class DetailActivity extends AppCompatActivity {
 
                                     SharedPreferences sp = getSharedPreferences(Utils.PREFERENCES_NAME, Context.MODE_PRIVATE);
                                     String token = sp.getString("token", null);
-                                    Log.i("AAA", "권혁준 토큰 : " + token);
 
                                     Call<Res> call = boardApi.deleteBoard("Bearer " + token, id);
                                     call.enqueue(new Callback<Res>() {

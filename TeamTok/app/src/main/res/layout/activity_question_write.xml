@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:ems="10"
-            android:hint="제목을 입력해주세요."
+            android:hint="제목"
             android:inputType="textPersonName"
             android:padding="8dp"
             android:paddingTop="5dp"
@@ -71,7 +71,7 @@
             android:background="#FFFFFF"
             android:ems="10"
             android:gravity="top"
-            android:hint="내용을 입력해 주세요."
+            android:hint="내용"
             android:inputType="textPersonName" />
 
     </LinearLayout>
