@@ -70,6 +70,7 @@
             android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:ems="10"
+            android:padding="10dp"
             android:gravity="top"
             android:hint="내용"
             android:inputType="textPersonName" />
