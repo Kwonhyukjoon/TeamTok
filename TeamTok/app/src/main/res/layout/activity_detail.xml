@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
@@ -26,7 +25,6 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -40,9 +38,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
                 android:background="@drawable/txtline"
-                android:orientation="vertical"
-                android:paddingBottom="10dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -100,30 +98,15 @@
                 android:gravity="top"
                 android:hint="내용 내용 내용입니다."
                 android:inputType="none"
-                android:padding="15dp" />
+                android:padding="15dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/txtline"
+                android:paddingBottom="5dp"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp">
-
-                <LinearLayout
-                    android:id="@+id/revert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        app:srcCompat="@android:drawable/ic_menu_revert" />
-                </LinearLayout>
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -177,92 +160,40 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/commentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/txtline"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:background="@drawable/comment_background"
+                android:weightSum="6">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/txtComment"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_weight="0.9"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+                    android:layout_weight="5"
+                    android:ems="10"
+                    android:hint="댓글 입력"
+                    android:padding="10dp"
+                    android:background="@android:color/transparent"
+                    android:inputType="textPersonName" />
 
-                    <EditText
-                        android:id="@+id/txtComment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9"
-                        android:background="@drawable/comment_background"
-                        android:ems="10"
-                        android:hint="댓글 입력"
-                        android:inputType="none"
-                        android:padding="10dp"
-                        tools:visibility="visible" />
-
-                    <Button
-                        android:id="@+id/btnComment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.1"
-                        android:text="등 록" />
-                </LinearLayout>
-
-
+                <Button
+                    android:id="@+id/btnComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
+                    android:text="등록" />
             </LinearLayout>
-
-
-            <LinearLayout
+            <ListView
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-
-                <ListView
-                    android:id="@+id/listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
-                    android:cacheColorHint="@color/colorAccent"
-                    android:divider="#ffffffff"
-                    android:dividerHeight="7dp"
-                    android:fadingEdge="none">
-
-                </ListView>
-
-                <LinearLayout
-
-                    android:id="@+id/empty"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/txtline"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="댓글이 없습니다."
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:paddingBottom="15dp"
-                        android:text="첫 댓글을 작성해 보세요."
-                        android:textSize="12dp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
+                android:layout_height="fill_parent"
+                android:background="#fff"
+                android:paddingTop="2dp" />
         </LinearLayout>
     </ScrollView>
 

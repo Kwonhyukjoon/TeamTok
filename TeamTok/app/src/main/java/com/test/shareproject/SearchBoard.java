@@ -126,6 +126,11 @@ public class SearchBoard extends Fragment {
             public void onClick(View view) {
                 String editsearch = txtsearch.getText().toString().trim();
 
+
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(getContext().INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(txtsearch.getWindowToken(),0);
+                txtsearch.setText("");
+
                 Retrofit retrofit = NetworkClient.getRetrofitClient(getActivity());
                 BoardApi boardApi = retrofit.create(BoardApi.class);
                 Call<Res> call = boardApi.searchBoard(category,editsearch);
