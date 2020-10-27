@@ -164,8 +164,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/comment_background"
                 android:weightSum="6">
 
                 <EditText
@@ -174,16 +174,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:ems="10"
-                    android:background="@drawable/comment_background"
                     android:hint="댓글 입력"
                     android:padding="10dp"
-                    android:inputType="none" />
+                    android:background="@android:color/transparent"
+                    android:inputType="textPersonName" />
 
                 <Button
                     android:id="@+id/btnComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
                     android:text="등록" />
             </LinearLayout>
             <ListView
