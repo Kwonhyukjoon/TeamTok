@@ -121,6 +121,8 @@ public class QuestionDetail extends AppCompatActivity {
 
         listView.setEmptyView(empty);
 
+        scroll = findViewById(R.id.scroll);
+
         Favorite = findViewById(R.id.Favorite);
         txtfav = findViewById(R.id.txtfav);
         favImg = findViewById(R.id.favImg);

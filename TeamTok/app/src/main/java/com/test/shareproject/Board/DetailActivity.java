@@ -69,8 +69,6 @@ public class DetailActivity extends AppCompatActivity {
 
     EditText txtComment;
     Button btnComment;
-    EditText nottxtComment;
-    Button notbtnComment;
     BoardReq boardReq;
 
     int board_id;

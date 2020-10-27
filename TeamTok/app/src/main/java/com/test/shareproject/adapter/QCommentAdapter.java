@@ -117,12 +117,11 @@ public class QCommentAdapter extends BaseAdapter {
         String login_email = sharedPreferences.getString("email", null);
         String email = commentReq.getEmail();
 
-        if (login_email != null) {
+        if(login_email != null){
             if (login_email.equals(email)) {
-
+                delComment.setVisibility(View.VISIBLE);
+                upComment.setVisibility(View.VISIBLE);
             } else {
-                delComment.setVisibility(View.GONE);
-                upComment.setVisibility(View.GONE);
 
             }
         }
