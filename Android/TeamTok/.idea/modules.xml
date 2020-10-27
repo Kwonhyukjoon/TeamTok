@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AirCalendar/AirCalendar.iml" filepath="$PROJECT_DIR$/.idea/modules/AirCalendar/AirCalendar.iml" group="ShareProject/AirCalendar" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ShareProject.iml" filepath="$PROJECT_DIR$/.idea/modules/ShareProject.iml" group="ShareProject" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="ShareProject/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/naveridlogin_android_sdk_4.2.5/naveridlogin_android_sdk_4.2.5.iml" filepath="$PROJECT_DIR$/.idea/modules/naveridlogin_android_sdk_4.2.5/naveridlogin_android_sdk_4.2.5.iml" group="ShareProject/naveridlogin_android_sdk_4.2.5" />
+    </modules>
+  </component>
+</project>

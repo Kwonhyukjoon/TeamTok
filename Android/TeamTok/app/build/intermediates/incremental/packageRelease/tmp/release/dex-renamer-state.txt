@@ -1,0 +1,4 @@
+#Mon Oct 26 12:55:55 KST 2020
+base.0=C\:\\Users\\Admin\\Documents\\GitHub\\TeamTok\\TeamTok\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
