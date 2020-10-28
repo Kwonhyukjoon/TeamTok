@@ -54,7 +54,6 @@ public class QCommentAdapter extends BaseAdapter {
 
     CommentReq commentReq;
     int question_id;
-    private Object Context;
 
 
     public QCommentAdapter(Context mContext, ArrayList<CommentReq> commentReqArrayList) {
