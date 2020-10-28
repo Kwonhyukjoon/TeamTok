@@ -180,8 +180,8 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:background="@drawable/comment_background"
-                    android:weightSum="6"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="6">
 
 
                     <EditText
@@ -189,22 +189,21 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
+                        android:background="@android:color/transparent"
                         android:ems="10"
                         android:hint="댓글 입력"
-                        android:padding="10dp"
-                        android:background="@android:color/transparent"
-                        android:inputType="textPersonName" />
+                        android:inputType="textPersonName"
+                        android:padding="10dp" />
 
                     <Button
                         android:id="@+id/btnComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
                         android:layout_weight="1"
-                        android:textColor="@color/colorAccent"
-                        android:text="등록" />
+                        android:background="@android:color/transparent"
+                        android:text="등록"
+                        android:textColor="@color/colorAccent" />
                 </LinearLayout>
-
 
 
             </LinearLayout>
@@ -215,15 +214,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/commentLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/comment_background"
-            android:weightSum="6"
-            android:orientation="horizontal">
-
                 <ListView
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
@@ -232,28 +222,7 @@
                     android:cacheColorHint="@color/colorAccent"
                     android:divider="#ffffffff"
                     android:dividerHeight="7dp"
-                    android:fadingEdge="none">
-
-            <EditText
-                android:id="@+id/txtComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="5"
-                android:ems="10"
-                android:hint="댓글 입력"
-                android:padding="10dp"
-                android:background="@android:color/transparent"
-                android:inputType="textPersonName" />
-
-            <Button
-                android:id="@+id/btnComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:layout_weight="1"
-                android:textColor="@color/colorAccent"
-                android:text="등록" />
-        </LinearLayout>
+                    android:fadingEdge="none"/>
 
                 <LinearLayout
 
