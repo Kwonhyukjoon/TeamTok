@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startLoading();
+        Loading();
     }
 
-    private void startLoading() {
+    private void Loading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
