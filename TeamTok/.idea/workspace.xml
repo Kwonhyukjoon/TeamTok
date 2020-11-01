@@ -6,7 +6,9 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="16771bf7-fd6d-4d49-9441-6dc0e38cb56d" name="Default Changelist" comment="" />
+    <list default="true" id="16771bf7-fd6d-4d49-9441-6dc0e38cb56d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +28,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1jgRqGRHMaFzthxLfFMw7T8qYbq" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -121,9 +123,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="277" y="54" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1604224642579" />
-    <state x="458" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1604224888390">
+    <state x="458" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1604225413646">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="458" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1604224888390" />
+    <state x="458" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1604225413646" />
   </component>
 </project>
