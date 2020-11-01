@@ -57,7 +57,11 @@ public class LoginActivity extends AppCompatActivity {
         btnNotlogin = findViewById(R.id.btnNotlogin);
         btnResister = findViewById(R.id.btnResister);
 
+        sp = getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
+        editor = sp.edit();
 
+        // 비밀번호 찾기
+        // 비밀번호 찾기위한 다이얼로그 창 띄우기
         FindPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
+        // 로그인 버튼
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-
+                // Retrofit2 연결 - 로그인 API
                 UserReq userReq = new UserReq(email,passwd);
                 //네트워크로 데이터 처리
                 Retrofit retrofit = NetworkClient.getRetrofitClient(LoginActivity.this);
@@ -94,18 +99,16 @@ public class LoginActivity extends AppCompatActivity {
                 call.enqueue(new Callback<UserRes>() {
                     @Override
                     public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+                        // 로그인 성공했을때
                         if(response.isSuccessful()){
                             email = response.body().getEmail();
                             String token = response.body().getToken();
                             String nickname = response.body().getItems().get(0).getNickname();
-                            int user_id = response.body().getUser_id();
 
-                            sp = getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
-                            editor = sp.edit();
+                            // 쉐어러리펀스에 토큰, 이메일(아이디), 닉네임 값을 저장시킨다.
                             editor.putString("token",token);
                             editor.putString("email",email);
                             editor.putString("nickname",nickname);
-                            editor.putInt("id",user_id);
                             editor.apply();
 
                             Intent loginintent = new Intent(LoginActivity.this, StartActivity.class);
@@ -125,13 +128,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // 비로그인으로 로그인 버튼
         btnNotlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sp = getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
-                editor = sp.edit();
+                // token값을 null값으로 저장시킨다.
                 String token = null;
-                Log.i("AAA" , "!@#@#" + token);
                 editor.putString("token",token);
                 editor.apply();
                 Intent startintent = new Intent(LoginActivity.this, StartActivity.class);
@@ -140,6 +142,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // 회원가입 페이지로 이동하는 버튼
         btnResister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

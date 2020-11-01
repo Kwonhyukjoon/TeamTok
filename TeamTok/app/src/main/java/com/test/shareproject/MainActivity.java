@@ -38,24 +38,29 @@ public class MainActivity extends AppCompatActivity {
         Loading();
     }
 
+
+    // 앱이 실행될 때 먼저 보여주는 로딩화면
     private void Loading() {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
+                // 로그인할때 생성되는 토큰값을 가져온다.
                 sp = getSharedPreferences(Utils.PREFERENCES_NAME,MODE_PRIVATE);
                 String token = sp.getString("token" , null);
+
+                // 토큰값에 대한 조건
                 if(token !=null){
-                    Intent i = new Intent(MainActivity.this, StartActivity.class);
+                    Intent i = new Intent(MainActivity.this, StartActivity.class); // 메인 홈 화면으로 이동
                     startActivity(i);
                     finish();
                 }else {
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class); // 로그인화면으로 이동
                     startActivity(intent);
                     finish();
                 }
             }
-        }, 2000);
+        }, 2000); // 2초동안 유지
     }
 }

@@ -50,7 +50,6 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtsame;
 
 
-
     ProgressDialog progressDialog;
     GMailSender gMailSender;
     String id;
@@ -94,7 +93,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         btn_send = (Button) findViewById(R.id.btn_send);
         btn_send.setOnClickListener(this);
 
-        btnNick = (Button)findViewById(R.id.btnNick);
+        btnNick = (Button) findViewById(R.id.btnNick);
         btnNick.setOnClickListener(this);
 
         et_ID = (EditText) findViewById(R.id.et_ID);
@@ -112,7 +111,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         txtchange = findViewById(R.id.txtchange);
         txtsame = findViewById(R.id.txtsame);
 
-
+        // 텍스트에 작성할 때 마다 실시간으로 비밀번호 정보를 알려준다.
         txtPass1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -137,6 +136,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // 위 비밀번호에 대한 맞는지 여부를 텍스트에 입력할 때마 알려준다.
         txtPass2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -163,7 +163,8 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void countDownTimer() { //카운트 다운 메소드
+    //카운트 다운 메소드
+    public void countDownTimer() {
 
         time_counter = (TextView) dialogLayout.findViewById(R.id.emailAuth_time_counter);
         //줄어드는 시간을 나타내는 TextView
@@ -192,9 +193,9 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
-
+            //시간이 다 되면 다이얼로그 종료
             @Override
-            public void onFinish() { //시간이 다 되면 다이얼로그 종료
+            public void onFinish() {
 
                 authDialog.dismiss();
 
@@ -205,6 +206,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         emailAuth_btn.setOnClickListener(this);
     }
 
+    // 버튼 이벤트
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -213,12 +215,12 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_send:
                 id = et_ID.getText().toString().trim();
 
-                UserReq userReq = new UserReq(id);
                 if (id.isEmpty()) {
                     Toast.makeText(JoinActivity.this, R.string.login_err_1, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                UserReq userReq = new UserReq(id);
                 Retrofit retrofit = NetworkClient.getRetrofitClient(JoinActivity.this);
                 UserApi userApi = retrofit.create(UserApi.class);
 
@@ -227,16 +229,14 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 call.enqueue(new Callback<UserRes>() {
                     @Override
                     public void onResponse(Call<UserRes> call, Response<UserRes> response) {
+                        // 아이디가 중복이 아닐경우
                         if (response.isSuccessful()) {
                             success = response.body().isSuccess();
-                            Log.i("AAA", "success : " + success);
-
-
-                            code = getRandom(4); // 8글자의 랜덤 문자열을 이메일로 받아온다.
+                            code = getRandom(4); // 4글자의 랜덤 문자열을 이메일로 받아온다.
                             gMailSender = new GMailSender(Utils.ID, Utils.PASSWORD);
                             timeThread();
                             Log.i("AAA", "인증번호 : " + code);
-
+                            // 아이디가 중복일 경우
                         } else {
                             Toast.makeText(JoinActivity.this, "아이디가 이미 사용중입니다.", Toast.LENGTH_SHORT).show();
                             et_ID.setText("");
@@ -252,21 +252,22 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
-            case R.id.emailAuth_btn: //다이얼로그 내의 인증번호 인증 버튼을 눌렀을 시
+            //다이얼로그 내의 인증번호 인증 버튼을 눌렀을 시
+            case R.id.emailAuth_btn:
                 String emailAuth = emailAuth_number.getText().toString().trim();
                 if (emailAuth.equalsIgnoreCase(code)) {
                     Toast.makeText(JoinActivity.this, "인증 성공", Toast.LENGTH_SHORT).show();
                     isChecked = true;
                     runOnUiThread(new Runnable() {
+
                         //중복확인 후 아이디 변경 못하게막기
                         @Override
                         public void run() {
                             if (success == true && isChecked == true) {
-
                                 et_ID.setFocusable(false);
                                 et_ID.setEnabled(false);
                                 btn_send.setEnabled(false);
-                            }else {
+                            } else {
                                 return;
                             }
                         }
@@ -281,12 +282,11 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
 
-            // 닉네임 중복ㅎ버튼
+            // 닉네임 중복버튼
             case R.id.btnNick:
                 String nickname = txtNick.getText().toString().trim();
 
-                UserReq nickReq = new UserReq(nickname,0);
-
+                UserReq nickReq = new UserReq(nickname, 0);
                 Retrofit nikretrofit = NetworkClient.getRetrofitClient(JoinActivity.this);
                 userApi = nikretrofit.create(UserApi.class);
 
@@ -310,12 +310,13 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                                     txtNick.setFocusable(false);
                                     txtNick.setEnabled(false);
                                     btnNick.setEnabled(false);
-                                }else {
+                                } else {
                                     return;
                                 }
                             }
                         });
                     }
+
                     @Override
                     public void onFailure(Call call, Throwable t) {
                         Log.i("AAA", "Fail msg : " + t.getMessage());
@@ -323,25 +324,26 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
 
+                // 회원가입 완료 버튼
             case R.id.btn_join:
+
                 String join_email = et_ID.getText().toString().trim();
                 String passwd = txtPass1.getText().toString().trim();
                 String join_Nik = txtNick.getText().toString().trim();
                 String name = txtName.getText().toString().trim();
 
 
-                if (isChecked == true && nickChecked == true){
-                    userReq = new UserReq(join_email,passwd,join_Nik,name);
-                    retrofit =  NetworkClient.getRetrofitClient(JoinActivity.this);
+                if (isChecked == true && nickChecked == true) {
+                    userReq = new UserReq(join_email, passwd, join_Nik, name);
+                    retrofit = NetworkClient.getRetrofitClient(JoinActivity.this);
                     userApi = retrofit.create(UserApi.class);
                     Call<UserRes> joincall = userApi.createUser(userReq);
 
                     joincall.enqueue(new Callback<UserRes>() {
                         @Override
                         public void onResponse(Call<UserRes> call, Response<UserRes> response) {
-                            if (response.isSuccessful()){
-                                Toast.makeText(JoinActivity.this, "완료.", Toast.LENGTH_SHORT).show();
-
+                            if (response.isSuccessful()) {
+                                Toast.makeText(JoinActivity.this, "회원가입 완료.", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(JoinActivity.this, LoginActivity.class);
                                 startActivity(i);
                                 finish();
@@ -359,6 +361,7 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    //프로그래스 다이얼로그 띄우는 메소드(인증번호 보내지기 까지 실행하는 다이얼로그)
     public void timeThread() {
         Handler mHandler = new Handler(Looper.getMainLooper());
         mHandler.postDelayed(new Runnable() {
@@ -379,14 +382,12 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
                         } catch (Exception e) {
 
                         }
+                        // 루프 값 안에서 해야 실행이 가능
                         progressDialog.dismiss();
                         Looper.prepare();
                         Dialog();
                         Toast.makeText(JoinActivity.this, "이메일이 성공적으로 보내졌습니다.", Toast.LENGTH_SHORT).show();
-
-
                         Looper.loop();
-
 
                     }
 
@@ -397,13 +398,13 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         }, 0);
     }
 
-
+    // 인증번호 입력 다이얼로그를 띄우는 메소드
     public void Dialog() {
         dialog = LayoutInflater.from(this);
-        dialogLayout = dialog.inflate(R.layout.auth_dialog, null); // LayoutInflater를 통해 XML에 정의된 Resource들을 View의 형태로 반환 시켜 줌
-        authDialog = new Dialog(this); //Dialog 객체 생성
-        authDialog.setContentView(dialogLayout); //Dialog에 inflate한 View를 탑재 하여줌
-        authDialog.setCanceledOnTouchOutside(false); //Dialog 바깥 부분을 선택해도 닫히지 않게 설정함.
+        dialogLayout = dialog.inflate(R.layout.auth_dialog, null);
+        authDialog = new Dialog(this);
+        authDialog.setContentView(dialogLayout);
+        authDialog.setCanceledOnTouchOutside(false);
         authDialog.show(); //Dialog를 나타내어 준다.
         countDownTimer();
     }
@@ -413,14 +414,13 @@ public class JoinActivity extends AppCompatActivity implements View.OnClickListe
         countDownTimer.cancel();
     } //다이얼로그 닫을 때 카운트 다운 타이머의 cancel()메소드 호출
 
-    // 인증번호를 랜덤 문자열로 가져오는 함수다.
+
+    // 인증번호를 랜덤 문자열로 가져오는 함수선언.
     private static final char[] chars;
 
     static {
         StringBuilder builder = new StringBuilder();
         for (char ch = '0'; ch <= '1'; ++ch)
-            builder.append(ch);
-        for (char ch = 'a'; ch <= 'z'; ++ch)
             builder.append(ch);
         for (char ch = 'A'; ch <= 'Z'; ++ch)
             builder.append(ch);
